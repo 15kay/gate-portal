@@ -1,12 +1,9 @@
-<p align="center">
-  <img src="wsu-new-logo.gif" alt="Walter Sisulu University" width="420">
-</p>
+![Walter Sisulu University](wsu-new-logo.gif)
 
-<h1 align="center">GATE Portal</h1>
-<p align="center"><strong>Graduate &amp; Alumni Tracking &amp; Engagement Portal</strong></p>
-<p align="center">
-  A web-based alumni management system built for <strong>Walter Sisulu University (WSU)</strong> that connects graduates with career opportunities, tracks employment outcomes, and facilitates engagement between alumni, the institution, and employers.
-</p>
+# GATE Portal
+**Graduate & Alumni Tracking & Engagement Portal**
+
+A web-based alumni management system built for **Walter Sisulu University (WSU)** that connects graduates with career opportunities, tracks employment outcomes, and facilitates engagement between alumni, the institution, and employers.
 
 ---
 
