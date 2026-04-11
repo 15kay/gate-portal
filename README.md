@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="wsu-logo.svg" alt="Walter Sisulu University" width="420">
+  <img src="wsu-new-logo.gif" alt="Walter Sisulu University" width="420">
 </p>
 
 <h1 align="center">GATE Portal</h1>
