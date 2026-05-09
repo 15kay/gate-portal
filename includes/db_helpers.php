@@ -20,12 +20,25 @@ function db_current_datetime() {
 
 /**
  * Get LIMIT clause based on database type
+ * For SQL Server: Use TOP or OFFSET/FETCH
+ * For MySQL: Use LIMIT
  */
 function db_limit($count, $offset = 0) {
     if (DB_TYPE === 'sqlsrv') {
-        return $offset > 0 ? "OFFSET $offset ROWS FETCH NEXT $count ROWS ONLY" : "OFFSET 0 ROWS FETCH NEXT $count ROWS ONLY";
+        // SQL Server uses OFFSET/FETCH (requires ORDER BY)
+        return $offset > 0 
+            ? "OFFSET $offset ROWS FETCH NEXT $count ROWS ONLY" 
+            : "OFFSET 0 ROWS FETCH NEXT $count ROWS ONLY";
     }
+    // MySQL
     return $offset > 0 ? "LIMIT $offset, $count" : "LIMIT $count";
+}
+
+/**
+ * Get TOP clause for SQL Server (use before SELECT)
+ */
+function db_top($count) {
+    return DB_TYPE === 'sqlsrv' ? "TOP $count" : "";
 }
 
 /**

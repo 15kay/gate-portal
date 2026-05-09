@@ -3,6 +3,7 @@ require_once '../includes/auth_guard.php';
 require_min_role('admin');
 require_once '../config/db.php';
 require_once '../includes/csrf.php';
+require_once '../includes/db_helpers.php';
 
 // CSRF-protected delete
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
@@ -37,7 +38,7 @@ $sql = "SELECT u.id, u.full_name, u.email, u.created_at,
         FROM users u
         LEFT JOIN alumni_profiles ap ON ap.user_id = u.id
         LEFT JOIN employment_records er ON er.user_id = u.id AND er.is_current = 1
-        $where ORDER BY u.created_at DESC LIMIT $per OFFSET $offset";
+        $where ORDER BY u.created_at DESC " . db_limit($per, $offset);
 
 $stmt = $pdo->prepare($sql); $stmt->execute($params);
 $alumni = $stmt->fetchAll();
