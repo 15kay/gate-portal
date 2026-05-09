@@ -66,6 +66,15 @@ try {
                     $this->conn = $conn;
                 }
                 
+                public function exec($sql) {
+                    $stmt = sqlsrv_query($this->conn, $sql);
+                    if ($stmt === false) {
+                        $errors = sqlsrv_errors();
+                        throw new PDOException("Exec failed: " . ($errors ? $errors[0]['message'] : 'Unknown'));
+                    }
+                    return sqlsrv_rows_affected($stmt);
+                }
+                
                 public function query($sql) {
                     $stmt = sqlsrv_query($this->conn, $sql);
                     if ($stmt === false) {
