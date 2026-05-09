@@ -5,23 +5,6 @@ require_once '../config/db.php';
 require_once '../includes/csrf.php';
 require_once '../includes/audit.php';
 
-// Ensure table exists
-$pdo->exec("CREATE TABLE IF NOT EXISTS opportunities (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(200) NOT NULL,
-    company VARCHAR(200) NOT NULL,
-    industry VARCHAR(100),
-    location VARCHAR(150),
-    type ENUM('Full-time','Part-time','Contract','Internship','Freelance') DEFAULT 'Full-time',
-    description TEXT,
-    requirements TEXT,
-    deadline DATE,
-    status ENUM('open','closed','filled') DEFAULT 'open',
-    created_by INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE SET NULL
-)");
-
 $success = $error = '';
 $readonly = !can_manage_opportunities();
 
