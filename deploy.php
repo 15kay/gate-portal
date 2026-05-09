@@ -12,7 +12,7 @@
  */
 
 // ── Configuration ─────────────────────────────────────────────────────────────
-define('WEBHOOK_SECRET', 'CHANGE_THIS_TO_A_STRONG_SECRET_KEY');
+define('WEBHOOK_SECRET', '91ab8cc456808c7cb5fee00e3080796681ad35ad9d35b86404870b22a96e3266');
 define('REPO_PATH', __DIR__);
 define('BRANCH', 'main');
 define('LOG_FILE', __DIR__ . '/deploy.log');
