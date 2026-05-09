@@ -51,6 +51,13 @@ function require_min_role(string $min_role) {
     $user_level = ROLE_LEVELS[$_SESSION['role']] ?? 0;
     $min_level  = ROLE_LEVELS[$min_role] ?? 99;
     if ($user_level < $min_level) {
+        if (function_exists('log_app_error')) {
+            log_app_error('auth', 'Access denied: insufficient role', [
+                'user_id'   => (string)($_SESSION['user_id'] ?? '-'),
+                'user_role' => $_SESSION['role'] ?? '-',
+                'required'  => $min_role,
+            ]);
+        }
         http_response_code(403);
         include __DIR__ . '/403.php';
         exit;

@@ -20,6 +20,20 @@ $stats = $pdo->prepare("
 $stats->execute([$emp['id']]);
 $stats = $stats->fetch();
 
+// Hiring pipeline counts
+$pipeline = $pdo->prepare("
+    SELECT
+      COUNT(*)                                              AS shortlisted,
+      SUM(cs.interview_scheduled_at IS NOT NULL)           AS interviewed,
+      SUM(cs.status='accepted')                            AS accepted,
+      SUM(cs.status='rejected')                            AS rejected
+    FROM candidate_submissions cs
+    JOIN opportunities o ON o.id=cs.opportunity_id
+    WHERE o.employer_id=? AND cs.employer_released=1
+");
+$pipeline->execute([$emp['id']]);
+$pipeline = $pipeline->fetch();
+
 $recent = $pdo->prepare("
     SELECT o.*,
       (SELECT COUNT(*) FROM candidate_submissions cs WHERE cs.opportunity_id=o.id) AS candidates,
@@ -116,6 +130,47 @@ include '../includes/header.php';
     </div>
   </div>
 </div>
+
+<?php if ((int)$pipeline['shortlisted'] > 0): ?>
+<div class="card" style="margin-bottom:1.5rem">
+  <div class="card-header">
+    <span class="card-title">Hiring Pipeline</span>
+    <a href="/gate-portal/employer/shortlist.php" class="btn btn-outline btn-sm">View Shortlists</a>
+  </div>
+  <div style="display:flex;gap:0;overflow:hidden;border-radius:var(--r)">
+    <?php
+    $stages = [
+      ['Shortlisted',  (int)$pipeline['shortlisted'], 'var(--info)',    '/gate-portal/employer/shortlist.php'],
+      ['Interviewed',  (int)$pipeline['interviewed'],  'var(--accent)',  '/gate-portal/employer/shortlist.php?filter=interviewed'],
+      ['Accepted',     (int)$pipeline['accepted'],     'var(--success)', '/gate-portal/employer/shortlist.php?filter=accepted'],
+      ['Rejected',     (int)$pipeline['rejected'],     'var(--danger)',  '/gate-portal/employer/shortlist.php?filter=rejected'],
+    ];
+    foreach ($stages as [$label, $count, $color, $link]):
+    ?>
+    <a href="<?= $link ?>" style="flex:1;text-align:center;padding:.875rem .5rem;background:#fff;border:1px solid var(--border);border-right:none;text-decoration:none;transition:background .15s"
+       onmouseover="this.style.background='var(--bg)'" onmouseout="this.style.background='#fff'">
+      <div style="font-size:1.6rem;font-weight:800;color:<?= $color ?>;line-height:1"><?= $count ?></div>
+      <div style="font-size:.72rem;color:var(--muted);margin-top:.25rem;text-transform:uppercase;letter-spacing:.4px"><?= $label ?></div>
+    </a>
+    <?php endforeach; ?>
+    <div style="flex:1;border:1px solid var(--border);display:none"></div><!-- spacer fix for last border -->
+  </div>
+  <?php
+  $total = (int)$pipeline['shortlisted'];
+  if ($total > 0):
+    $pct_int = $total ? round((int)$pipeline['interviewed'] / $total * 100) : 0;
+    $pct_acc = $total ? round((int)$pipeline['accepted']    / $total * 100) : 0;
+  ?>
+  <div style="margin-top:.85rem;padding-top:.85rem;border-top:1px solid var(--border-light)">
+    <div style="display:flex;height:6px;border-radius:99px;overflow:hidden;background:var(--border)">
+      <div style="width:<?= $pct_acc ?>%;background:var(--success)"></div>
+      <div style="width:<?= max(0,$pct_int-$pct_acc) ?>%;background:var(--accent)"></div>
+    </div>
+    <div class="text-xs text-muted" style="margin-top:.4rem"><?= $pct_int ?>% interviewed &middot; <?= $pct_acc ?>% accepted</div>
+  </div>
+  <?php endif; ?>
+</div>
+<?php endif; ?>
 
 <div class="card">
   <div class="card-header">

@@ -9,7 +9,14 @@ function send_mail(string $to, string $subject, string $html, array $attachments
     if (!$host || !$user || !$pass) {
         $h  = "MIME-Version: 1.0\r\nContent-Type: text/html; charset=UTF-8\r\n";
         $h .= "From: {$fromName} <noreply@gateportal.ac>\r\n";
-        return @mail($to, $subject, $html, $h);
+        $ok = @mail($to, $subject, $html, $h);
+        if (!$ok && function_exists('log_app_error')) {
+            log_app_error('network', 'php mail() failed (no SMTP config)', [
+                'to'      => $to,
+                'subject' => $subject,
+            ]);
+        }
+        return $ok;
     }
 
     try {
@@ -22,7 +29,12 @@ function send_mail(string $to, string $subject, string $html, array $attachments
             $body .= "Content-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n";
             $body .= chunk_split(base64_encode($html)) . "\r\n";
             foreach ($attachments as $a) {
-                if (!file_exists($a['path'])) continue;
+                if (!file_exists($a['path'])) {
+                    if (function_exists('log_app_error')) {
+                        log_app_error('filesystem', 'Mail attachment not found', ['path' => $a['path']]);
+                    }
+                    continue;
+                }
                 $body .= "--{$boundary}\r\n";
                 $body .= "Content-Type: {$a['mime']}; name=\"{$a['name']}\"\r\n";
                 $body .= "Content-Transfer-Encoding: base64\r\n";
@@ -37,8 +49,17 @@ function send_mail(string $to, string $subject, string $html, array $attachments
         }
 
         // Open socket
-        $sock = fsockopen("tcp://{$host}", $port, $errno, $errstr, 15);
-        if (!$sock) return false;
+        $sock = @fsockopen("tcp://{$host}", $port, $errno, $errstr, 15);
+        if (!$sock) {
+            if (function_exists('log_app_error')) {
+                log_app_error('network', "SMTP socket connection failed: {$errstr}", [
+                    'host'  => $host,
+                    'port'  => (string)$port,
+                    'errno' => (string)$errno,
+                ]);
+            }
+            return false;
+        }
         stream_set_timeout($sock, 15);
 
         $read = function() use ($sock) {
@@ -62,7 +83,14 @@ function send_mail(string $to, string $subject, string $html, array $attachments
         // STARTTLS
         $send("STARTTLS"); $read();
         if (!stream_socket_enable_crypto($sock, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
-            fclose($sock); return false;
+            if (function_exists('log_app_error')) {
+                log_app_error('network', 'SMTP STARTTLS negotiation failed', [
+                    'host' => $host,
+                    'port' => (string)$port,
+                ]);
+            }
+            fclose($sock);
+            return false;
         }
 
         // Re-EHLO after TLS
@@ -74,7 +102,17 @@ function send_mail(string $to, string $subject, string $html, array $attachments
         $send(base64_encode($user)); $read();
         $send(base64_encode($pass));
         $authResp = $read();
-        if (substr(trim($authResp), 0, 3) !== '235') { fclose($sock); return false; }
+        if (substr(trim($authResp), 0, 3) !== '235') {
+            if (function_exists('log_app_error')) {
+                log_app_error('network', 'SMTP authentication failed', [
+                    'host'   => $host,
+                    'user'   => $user,
+                    'server' => trim($authResp),
+                ]);
+            }
+            fclose($sock);
+            return false;
+        }
 
         $send("MAIL FROM:<{$user}>"); $read();
         $send("RCPT TO:<{$to}>"); $read();
@@ -95,9 +133,26 @@ function send_mail(string $to, string $subject, string $html, array $attachments
 
         $sendResp = $read();
         $send("QUIT"); fclose($sock);
-        return substr(trim($sendResp), 0, 3) === '250';
+
+        $ok = substr(trim($sendResp), 0, 3) === '250';
+        if (!$ok && function_exists('log_app_error')) {
+            log_app_error('network', 'SMTP DATA rejected by server', [
+                'to'       => $to,
+                'host'     => $host,
+                'response' => trim($sendResp),
+            ]);
+        }
+        return $ok;
 
     } catch (Throwable $e) {
+        if (function_exists('log_app_error')) {
+            log_app_error('network', 'send_mail exception: ' . $e->getMessage(), [
+                'to'    => $to,
+                'class' => get_class($e),
+                'file'  => $e->getFile(),
+                'line'  => (string)$e->getLine(),
+            ]);
+        }
         return false;
     }
 }

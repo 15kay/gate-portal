@@ -16,10 +16,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
 
     if (isset($_POST['delete_id'])) {
-        // Only delete own jobs
         $pdo->prepare("DELETE FROM opportunities WHERE id=? AND employer_id=?")->execute([$_POST['delete_id'], $emp['id']]);
         audit_log('delete_opportunity', 'opportunity:'.$_POST['delete_id'], '', 'employer');
         header('Location: /gate-portal/employer/jobs.php?msg=deleted'); exit;
+    }
+
+    if (isset($_POST['quick_status'])) {
+        $jid      = (int)$_POST['job_id'];
+        $new_stat = in_array($_POST['new_status'], ['open','closed','filled']) ? $_POST['new_status'] : 'open';
+        $pdo->prepare("UPDATE opportunities SET status=? WHERE id=? AND employer_id=?")->execute([$new_stat, $jid, $emp['id']]);
+        audit_log('update_opportunity', "opportunity:{$jid}", $new_stat, 'employer');
+        header('Location: /gate-portal/employer/jobs.php?status='.($_GET['status'] ?? '').'&msg=saved'); exit;
+    }
+
+    if (isset($_POST['duplicate_id'])) {
+        $jid  = (int)$_POST['duplicate_id'];
+        $orig = $pdo->prepare("SELECT * FROM opportunities WHERE id=? AND employer_id=?");
+        $orig->execute([$jid, $emp['id']]);
+        $orig = $orig->fetch();
+        if ($orig) {
+            $pdo->prepare("INSERT INTO opportunities (title,company,employer_id,contact_name,contact_email,industry,location,type,description,requirements,deadline,status,created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)")
+                ->execute(['Copy of '.$orig['title'], $orig['company'], $orig['employer_id'],
+                           $orig['contact_name'], $orig['contact_email'], $orig['industry'],
+                           $orig['location'], $orig['type'], $orig['description'],
+                           $orig['requirements'], null, 'open', $_SESSION['user_id']]);
+            $new_id = $pdo->lastInsertId();
+            audit_log('create_opportunity', 'opportunities', 'Copy of '.$orig['title'], 'employer');
+            header('Location: /gate-portal/employer/jobs.php?edit='.$new_id.'&msg=duplicated'); exit;
+        }
+        header('Location: /gate-portal/employer/jobs.php'); exit;
     }
 
     $title    = trim($_POST['title'] ?? '');
@@ -49,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$msg_map = ['created'=>'Job posted successfully.','saved'=>'Job updated.','deleted'=>'Job removed.'];
+$msg_map = ['created'=>'Job posted successfully.','saved'=>'Job updated.','deleted'=>'Job removed.','duplicated'=>'Job duplicated — update the details and post.'];
 if (isset($_GET['msg'],$msg_map[$_GET['msg']])) $success = $msg_map[$_GET['msg']];
 
 $show_form = isset($_GET['new']) || isset($_GET['edit']);
@@ -186,8 +211,30 @@ include '../includes/header.php';
           &middot; <strong><?= $j['candidates'] ?></strong> candidate<?= $j['candidates']!=1?'s':'' ?> matched
         </div>
       </div>
-      <div style="display:flex;gap:.4rem;flex-shrink:0">
+      <div style="display:flex;gap:.4rem;flex-shrink:0;flex-wrap:wrap">
         <a href="?edit=<?= $j['id'] ?>" class="btn btn-outline btn-sm">Edit</a>
+        <?php if ($j['status'] === 'open'): ?>
+        <form method="POST" style="display:inline">
+          <?= csrf_field() ?>
+          <input type="hidden" name="quick_status" value="1">
+          <input type="hidden" name="job_id"    value="<?= $j['id'] ?>">
+          <input type="hidden" name="new_status" value="closed">
+          <button class="btn btn-outline btn-sm" title="Close this posting">Close</button>
+        </form>
+        <?php elseif ($j['status'] === 'closed'): ?>
+        <form method="POST" style="display:inline">
+          <?= csrf_field() ?>
+          <input type="hidden" name="quick_status" value="1">
+          <input type="hidden" name="job_id"    value="<?= $j['id'] ?>">
+          <input type="hidden" name="new_status" value="open">
+          <button class="btn btn-success btn-sm" title="Reopen this posting">Reopen</button>
+        </form>
+        <?php endif; ?>
+        <form method="POST" style="display:inline" title="Duplicate this job">
+          <?= csrf_field() ?>
+          <input type="hidden" name="duplicate_id" value="<?= $j['id'] ?>">
+          <button class="btn btn-outline btn-sm">Copy</button>
+        </form>
         <form method="POST" style="display:inline" onsubmit="return confirm('Remove this job posting?')">
           <?= csrf_field() ?>
           <input type="hidden" name="delete_id" value="<?= $j['id'] ?>">
@@ -196,8 +243,14 @@ include '../includes/header.php';
       </div>
     </div>
     <?php if ($j['description']): ?>
+    <?php $long = mb_strlen($j['description']) > 160; ?>
     <div class="text-sm text-muted" style="margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--border-light)">
-      <?= htmlspecialchars(mb_substr($j['description'],0,160)) ?><?= strlen($j['description'])>160?'…':'' ?>
+      <span class="job-desc-short-<?= $j['id'] ?>"><?= htmlspecialchars(mb_substr($j['description'],0,160)) ?><?= $long?'…':'' ?></span>
+      <?php if ($long): ?>
+      <span class="job-desc-full-<?= $j['id'] ?>" style="display:none"><?= htmlspecialchars($j['description']) ?></span>
+      <a href="#" class="text-xs" style="color:var(--primary);margin-left:.3rem;white-space:nowrap"
+         onclick="event.preventDefault();toggleDesc(<?= $j['id'] ?>)" id="job-desc-toggle-<?= $j['id'] ?>">Show more</a>
+      <?php endif; ?>
     </div>
     <?php endif; ?>
   </div>
@@ -207,3 +260,14 @@ include '../includes/header.php';
 </div>
 
 <?php include '../includes/footer.php'; ?>
+<script>
+function toggleDesc(id) {
+    var s = document.querySelector('.job-desc-short-' + id);
+    var f = document.querySelector('.job-desc-full-'  + id);
+    var t = document.getElementById('job-desc-toggle-' + id);
+    var expanded = f.style.display !== 'none';
+    s.style.display = expanded ? 'inline' : 'none';
+    f.style.display = expanded ? 'none'   : 'inline';
+    t.textContent   = expanded ? 'Show more' : 'Show less';
+}
+</script>

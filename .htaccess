@@ -1,0 +1,65 @@
+# ─── Directory Listing ───────────────────────────────────────
+Options -Indexes
+ServerSignature Off
+
+# ─── Custom Error Pages ──────────────────────────────────────
+ErrorDocument 400 /gate-portal/includes/errors/400.php
+ErrorDocument 401 /gate-portal/includes/errors/401.php
+ErrorDocument 403 /gate-portal/includes/errors/403.php
+ErrorDocument 404 /gate-portal/includes/errors/404.php
+ErrorDocument 405 /gate-portal/includes/errors/405.php
+ErrorDocument 429 /gate-portal/includes/errors/429.php
+ErrorDocument 500 /gate-portal/includes/errors/500.php
+ErrorDocument 502 /gate-portal/includes/errors/502.php
+ErrorDocument 503 /gate-portal/includes/errors/503.php
+ErrorDocument 504 /gate-portal/includes/errors/504.php
+
+# ─── Block Sensitive Files & Directories ─────────────────────
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block .env files
+    RewriteRule ^\.env(\..*)?$ - [F,L]
+
+    # Block .git directory
+    RewriteRule ^\.git(/.*)?$ - [F,L]
+
+    # Block direct access to sql/ and config/
+    RewriteRule ^(sql|config)(/.*)?$ - [F,L]
+
+    # Block hidden files (starting with .)
+    RewriteRule (^|/)\. - [F,L]
+</IfModule>
+
+# ─── Security Headers ────────────────────────────────────────
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+    # Uncomment once HTTPS is configured:
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
+
+# ─── PHP Error Display (belt-and-suspenders with db.php) ─────
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>
+<IfModule mod_php7.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>
+<IfModule mod_php8.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>
+
+# ─── HTTPS Redirect (uncomment when SSL certificate is ready) ─
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{HTTPS} off
+#     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+# </IfModule>

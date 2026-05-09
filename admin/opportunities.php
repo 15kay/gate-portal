@@ -253,7 +253,14 @@ include '../includes/header.php';
 
 <?php include '../includes/footer.php'; ?>
 <script>
-const empData = <?= json_encode(array_column($employer_list, null, 'id')) ?>;
+<?php
+$_emp_json = json_encode(array_column($employer_list, null, 'id'));
+if (json_last_error() !== JSON_ERROR_NONE) {
+    log_app_error('application', 'json_encode failed for employer list: ' . json_last_error_msg());
+    $_emp_json = '{}';
+}
+?>
+const empData = <?= $_emp_json ?>;
 function syncCompany(sel) {
     const emp = empData[sel.value];
     if (emp) document.getElementById('company-field').value = emp.company_name;

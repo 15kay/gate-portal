@@ -35,6 +35,10 @@ $alumni_json = json_encode(array_values(array_map(fn($r) => [
     'photo'     => $r['profile_photo'] ? '/gate-portal/' . $r['profile_photo'] : '',
     'employed'  => in_array($r['employment_type'] ?? '', ['Full-time','Part-time','Self-employed','Freelance']),
 ], $rows)));
+if (json_last_error() !== JSON_ERROR_NONE) {
+    log_app_error('application', 'json_encode failed for alumni map data: ' . json_last_error_msg());
+    $alumni_json = '[]';
+}
 
 include '../includes/header.php';
 ?>

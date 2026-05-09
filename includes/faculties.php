@@ -89,6 +89,10 @@ function wsu_faculty_selects(string $sel_faculty = '', string $sel_dept = ''): v
 
     // JS data + updater
     $json = json_encode($faculties, JSON_HEX_APOS | JSON_HEX_QUOT);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        log_app_error('application', 'json_encode failed for faculty list: ' . json_last_error_msg());
+        $json = '{}';
+    }
     echo <<<JS
     <script>
     var WSU_FACULTIES = {$json};

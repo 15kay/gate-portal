@@ -1,0 +1,12 @@
+# Block PHP execution — uploaded files must never run as PHP
+<FilesMatch "\.php[0-9]?$">
+    Require all denied
+</FilesMatch>
+
+# Disable directory listing
+Options -Indexes
+
+# Force PDFs and Office docs to download rather than open inline
+<FilesMatch "\.(pdf|doc|docx)$">
+    Header set Content-Disposition "attachment"
+</FilesMatch>

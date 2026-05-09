@@ -522,7 +522,14 @@ include '../includes/header.php';
 </form>
 
 <script>
-const DEPTS = <?= json_encode($depts_by_fac, JSON_HEX_TAG) ?>;
+<?php
+$_depts_json = json_encode($depts_by_fac, JSON_HEX_TAG);
+if (json_last_error() !== JSON_ERROR_NONE) {
+    log_app_error('application', 'json_encode failed for depts_by_fac: ' . json_last_error_msg());
+    $_depts_json = '{}';
+}
+?>
+const DEPTS = <?= $_depts_json ?>;
 
 function loadDepts(facName, selectedDept) {
     const facSel  = document.getElementById('faculty-select');

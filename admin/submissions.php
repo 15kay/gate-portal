@@ -81,16 +81,26 @@ if (!$readonly && $_SERVER['REQUEST_METHOD'] === 'POST') {
         if (($opp['contact_email'] ?? '') && $cands) {
             $zip_path = sys_get_temp_dir().'/shortlist_'.$opp_id.'_'.time().'.zip';
             $zip = new ZipArchive();
-            if ($zip->open($zip_path, ZipArchive::CREATE)) {
+            $zip_open = $zip->open($zip_path, ZipArchive::CREATE);
+            if ($zip_open === true) {
                 $cv_dir = dirname(__DIR__).'/uploads/cvs/';
                 foreach ($cands as $c) {
                     if (!empty($c['cv_file']) && file_exists($cv_dir.$c['cv_file'])) {
                         $safe = preg_replace('/[^a-zA-Z0-9._-]/','_',$c['full_name']);
                         $ext  = pathinfo($c['cv_file'], PATHINFO_EXTENSION);
-                        $zip->addFile($cv_dir.$c['cv_file'], "CVs/{$safe}.{$ext}");
+                        if (!$zip->addFile($cv_dir.$c['cv_file'], "CVs/{$safe}.{$ext}")) {
+                            log_app_error('filesystem', 'ZipArchive::addFile failed', ['file' => $c['cv_file']]);
+                        }
                     }
                 }
-                $zip->close();
+                if (!$zip->close()) {
+                    log_app_error('filesystem', 'ZipArchive::close failed', ['path' => $zip_path]);
+                }
+            } else {
+                log_app_error('filesystem', 'ZipArchive::open failed', [
+                    'path' => $zip_path,
+                    'code' => (string)$zip_open,
+                ]);
             }
             $rows_html = '';
             foreach ($cands as $i => $c) {

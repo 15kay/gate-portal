@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r 'mysql_\\\\|eval\\\\|exec\\\\|system\\\\|$_GET\\\\[\\\\|mysqli\\\\|mysqli_' /c/xampp/htdocs/gate-portal '--include=*.php')",
+      "Bash(grep -r 'move_uploaded_file\\\\|$_FILES\\\\|unlink' /c/xampp/htdocs/gate-portal '--include=*.php')",
+      "Bash(php -l c:/xampp/htdocs/gate-portal/config/db.php)",
+      "Bash(sort -t: -k2 -rn)",
+      "Bash(grep -n 'UPLOAD_ERR\\\\|move_uploaded_file\\\\|$_FILES' /c/xampp/htdocs/gate-portal/alumni/cv_builder.php)",
+      "Bash(grep -n \"require\\\\|include\" /c/xampp/htdocs/gate-portal/includes/errors/*.php)",
+      "Bash(php -l c:/xampp/htdocs/gate-portal/includes/error_handler.php)",
+      "Bash(php -l c:/xampp/htdocs/gate-portal/includes/errors/401.php)",
+      "Bash(php -l c:/xampp/htdocs/gate-portal/includes/errors/405.php)",
+      "Bash(php -l c:/xampp/htdocs/gate-portal/includes/errors/429.php)",
+      "Bash(php -l c:/xampp/htdocs/gate-portal/includes/errors/502.php)",
+      "Bash(php -l c:/xampp/htdocs/gate-portal/employer/shortlist.php)",
+      "Bash(php -l c:/xampp/htdocs/gate-portal/employer/jobs.php)",
+      "Bash(php -l c:/xampp/htdocs/gate-portal/employer/dashboard.php)"
+    ]
+  }
+}
