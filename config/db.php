@@ -45,7 +45,9 @@ try {
                 "UID" => DB_USER,
                 "PWD" => DB_PASS,
                 "CharacterSet" => "UTF-8",
-                "ReturnDatesAsStrings" => true
+                "ReturnDatesAsStrings" => true,
+                "TrustServerCertificate" => true,
+                "Encrypt" => true
             ];
             
             $conn = sqlsrv_connect(DB_HOST, $connectionInfo);
@@ -95,6 +97,7 @@ try {
                         private $conn;
                         private $sql;
                         private $params = [];
+                        private $stmt = null;
                         
                         public function __construct($conn, $sql) {
                             $this->conn = $conn;
@@ -103,32 +106,35 @@ try {
                         
                         public function execute($params = []) {
                             $this->params = $params ? array_values($params) : [];
-                            $stmt = sqlsrv_query($this->conn, $this->sql, $this->params);
-                            if ($stmt === false) {
+                            $this->stmt = sqlsrv_query($this->conn, $this->sql, $this->params);
+                            if ($this->stmt === false) {
                                 $errors = sqlsrv_errors();
                                 throw new PDOException("Execute failed: " . ($errors ? $errors[0]['message'] : 'Unknown'));
                             }
-                            return new class($stmt) {
-                                private $stmt;
-                                public function __construct($stmt) { $this->stmt = $stmt; }
-                                public function fetch($mode = null) { 
-                                    return sqlsrv_fetch_array($this->stmt, SQLSRV_FETCH_ASSOC); 
-                                }
-                                public function fetchAll($mode = null) {
-                                    $results = [];
-                                    while ($row = sqlsrv_fetch_array($this->stmt, SQLSRV_FETCH_ASSOC)) {
-                                        $results[] = $row;
-                                    }
-                                    return $results;
-                                }
-                                public function fetchColumn() {
-                                    $row = sqlsrv_fetch_array($this->stmt, SQLSRV_FETCH_NUMERIC);
-                                    return $row ? $row[0] : false;
-                                }
-                                public function rowCount() {
-                                    return sqlsrv_rows_affected($this->stmt);
-                                }
-                            };
+                            return true;
+                        }
+                        
+                        public function fetch($mode = null) { 
+                            return $this->stmt ? sqlsrv_fetch_array($this->stmt, SQLSRV_FETCH_ASSOC) : false; 
+                        }
+                        
+                        public function fetchAll($mode = null) {
+                            if (!$this->stmt) return [];
+                            $results = [];
+                            while ($row = sqlsrv_fetch_array($this->stmt, SQLSRV_FETCH_ASSOC)) {
+                                $results[] = $row;
+                            }
+                            return $results;
+                        }
+                        
+                        public function fetchColumn() {
+                            if (!$this->stmt) return false;
+                            $row = sqlsrv_fetch_array($this->stmt, SQLSRV_FETCH_NUMERIC);
+                            return $row ? $row[0] : false;
+                        }
+                        
+                        public function rowCount() {
+                            return $this->stmt ? sqlsrv_rows_affected($this->stmt) : 0;
                         }
                         
                         public function bindParam($param, &$value, $type = null) {

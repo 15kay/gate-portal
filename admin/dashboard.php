@@ -2,13 +2,16 @@
 require_once '../includes/auth_guard.php';
 require_min_role('reports_admin');
 require_once '../config/db.php';
+require_once '../includes/db_helpers.php';
+
+$current_date = db_current_date();
 
 $stats = $pdo->query("
     SELECT
       (SELECT COUNT(*) FROM users WHERE role='alumni') AS total_alumni,
       (SELECT COUNT(*) FROM employment_records WHERE is_current=1 AND employment_type != 'Unemployed') AS employed,
       (SELECT COUNT(*) FROM employment_records WHERE is_current=1 AND employment_type = 'Unemployed') AS unemployed,
-      (SELECT COUNT(*) FROM events WHERE event_date >= CURDATE()) AS upcoming_events
+      (SELECT COUNT(*) FROM events WHERE event_date >= $current_date) AS upcoming_events
 ")->fetch();
 
 $emp_breakdown = $pdo->query("
