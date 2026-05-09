@@ -44,16 +44,66 @@ A web-based alumni management system built for **Walter Sisulu University (WSU)*
 
 ## Installation
 
+### Local Development (XAMPP)
+
 1. Clone or copy the project into your web server root:
    ```
    C:\xampp\htdocs\gate-portal\
    ```
 
-2. Start **Apache** and **MySQL** via the XAMPP Control Panel.
+2. Copy `.env.example` to `.env` and configure your database:
+   ```bash
+   cp .env.example .env
+   ```
 
-3. Import the database (see [Database Setup](#database-setup)).
+3. Start **Apache** and **MySQL** via the XAMPP Control Panel.
 
-4. Visit: `http://localhost/gate-portal/`
+4. Run the database setup script:
+   ```bash
+   php setup_database.php
+   ```
+
+5. Visit: `http://localhost/gate-portal/`
+
+### Production Deployment (WSU Server)
+
+1. SSH into the server and clone the repository:
+   ```bash
+   cd /var/www/html
+   git clone https://github.com/YOUR_USERNAME/gate-portal.git
+   ```
+
+2. Create `.env` file with production credentials:
+   ```bash
+   cd gate-portal
+   cp .env.example .env
+   nano .env
+   ```
+
+3. Set proper permissions:
+   ```bash
+   chmod 755 deploy.php
+   chmod 777 uploads/photos uploads/cvs
+   ```
+
+4. Run the database setup:
+   ```bash
+   php setup_database.php
+   ```
+
+5. Configure GitHub webhook:
+   - Go to GitHub → Settings → Webhooks → Add webhook
+   - Payload URL: `https://your-domain.wsu.ac.za/gate-portal/deploy.php`
+   - Content type: `application/json`
+   - Secret: Set a strong secret in `deploy.php` (line 14)
+   - Events: Just the push event
+   - Active: ✓
+
+6. Test the webhook:
+   ```bash
+   git push origin main
+   ```
+   Check `deploy.log` for deployment status.
 
 ---
 

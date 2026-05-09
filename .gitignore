@@ -1,0 +1,24 @@
+# Environment variables
+.env
+
+# Uploads
+uploads/photos/*
+uploads/cvs/*
+!uploads/photos/.gitkeep
+!uploads/cvs/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+error_log
