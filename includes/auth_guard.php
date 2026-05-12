@@ -1,6 +1,12 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
 
+// Prevent page caching for authenticated pages
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
+header('Expires: Sat, 26 Jul 1997 05:00:00 GMT');
+
 // Role hierarchy — higher index = more permissions
 const ROLE_LEVELS = [
     'alumni'        => 0,
@@ -12,7 +18,7 @@ const ROLE_LEVELS = [
 
 function require_login() {
     if (empty($_SESSION['user_id'])) {
-        header('Location: /gate-portal/auth/login.php');
+        header('Location: /auth/login.php');
         exit;
     }
     // Enforce maintenance mode for alumni
@@ -40,7 +46,7 @@ function require_login() {
 function require_role(string $role) {
     require_login();
     if ($_SESSION['role'] !== $role) {
-        header('Location: /gate-portal/auth/login.php');
+        header('Location: /auth/login.php');
         exit;
     }
 }
