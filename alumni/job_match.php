@@ -19,7 +19,8 @@ $cv = $cv->fetch() ?: [];
 $jobs = $pdo->prepare("SELECT * FROM employment_records WHERE user_id=? ORDER BY is_current DESC");
 $jobs->execute([$uid]);
 $jobs = $jobs->fetchAll();
-$current_job = reset(array_filter($jobs, fn($j) => $j['is_current'])) ?: null;
+$current_jobs = array_filter($jobs, fn($j) => $j['is_current']);
+$current_job = reset($current_jobs) ?: null;
 
 // ── PROFILE COMPLETENESS GATE ──────────────────────────────
 $required = ['full_name','degree','department','graduation_year','phone'];
@@ -233,7 +234,7 @@ include '../includes/header.php';
     <p>Opportunities matched to your profile &amp; CV</p>
   </div>
   <div class="page-header-actions">
-    <a href="/gate-portal/alumni/cv_builder.php" class="btn btn-outline btn-sm">
+    <a href="/alumni/cv_builder.php" class="btn btn-outline btn-sm">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       Update CV Profile
     </a>
@@ -246,7 +247,7 @@ include '../includes/header.php';
   <span>
     Your profile is incomplete. You cannot be matched or selected for opportunities until you fill in:
     <strong><?= implode(', ', $missing) ?></strong>.
-    <a href="/gate-portal/alumni/profile.php" style="color:inherit;font-weight:700">Fix now →</a>
+    <a href="/alumni/profile.php" style="color:inherit;font-weight:700">Fix now →</a>
   </span>
 </div>
 <?php endif; ?>
@@ -254,7 +255,7 @@ include '../includes/header.php';
 <?php if (!$cv || !$cv['skills']): ?>
 <div class="alert alert-warning">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-  <span>You haven't added your skills yet. <a href="/gate-portal/alumni/cv_builder.php" style="color:inherit;font-weight:700">Add skills in CV Builder</a> to get accurate matches.</span>
+  <span>You haven't added your skills yet. <a href="/alumni/cv_builder.php" style="color:inherit;font-weight:700">Add skills in CV Builder</a> to get accurate matches.</span>
 </div>
 <?php endif; ?>
 
@@ -280,10 +281,10 @@ include '../includes/header.php';
     </div>
     <?php endif; ?>
     <div>
-      <div class="text-xs text-muted fw-600" style="text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem">Profile Score</div>
-      <?php $ps = (int)($cv['profile_score'] ?? 0); ?>
-      <span style="font-size:1.5rem;font-weight:800;color:<?= $score_color($ps) ?>"><?= $ps ?></span>
-      <span class="text-xs text-muted">/100</span>
+      <div class="text-xs text-muted fw-600" style="text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem">Skills Listed</div>
+      <?php $skill_count = count(array_filter(array_map('trim', explode(',', $cv['skills'] ?? '')))); ?>
+      <span style="font-size:1.5rem;font-weight:800;color:<?= $skill_count >= 5 ? 'var(--success)' : 'var(--accent)' ?>"><?= $skill_count ?></span>
+      <span class="text-xs text-muted">skills</span>
     </div>
   </div>
 </div>
