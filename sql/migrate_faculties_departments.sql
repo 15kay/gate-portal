@@ -20,9 +20,17 @@ CREATE TABLE IF NOT EXISTS departments (
     FOREIGN KEY (faculty_id) REFERENCES faculties(id) ON DELETE CASCADE
 );
 
--- Add faculty column to alumni_profiles if not exists
-ALTER TABLE alumni_profiles 
-ADD COLUMN IF NOT EXISTS faculty VARCHAR(200) AFTER department;
+-- Add faculty column to alumni_profiles (ignore error if exists)
+SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS 
+    WHERE TABLE_SCHEMA = 'gate_portal' AND TABLE_NAME = 'alumni_profiles' AND COLUMN_NAME = 'faculty');
+
+SET @sql = IF(@col_exists = 0, 
+    'ALTER TABLE alumni_profiles ADD COLUMN faculty VARCHAR(200) AFTER department', 
+    'SELECT "Column faculty already exists" AS message');
+
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
 
 -- Insert WSU faculties
 INSERT IGNORE INTO faculties (name) VALUES
