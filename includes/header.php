@@ -28,7 +28,7 @@ function nav_active(string $path): string {
 <title><?= htmlspecialchars(setting('portal_name','GATE Portal')) ?> — <?= htmlspecialchars(setting('institution_name','Walter Sisulu University')) ?></title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/gate-portal/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 
