@@ -21,15 +21,15 @@ $emp_breakdown = $pdo->query("
 ")->fetchAll();
 
 $by_year = $pdo->query("
-    SELECT TOP 7 graduation_year, COUNT(*) AS cnt
+    SELECT graduation_year, COUNT(*) AS cnt
     FROM alumni_profiles WHERE graduation_year IS NOT NULL
-    GROUP BY graduation_year ORDER BY graduation_year ASC
+    GROUP BY graduation_year ORDER BY graduation_year ASC LIMIT 7
 ")->fetchAll();
 
 $recent = $pdo->query("
-    SELECT TOP 8 u.full_name, u.email, u.created_at, ap.graduation_year, ap.degree, ap.department
+    SELECT u.full_name, u.email, u.created_at, ap.graduation_year, ap.degree, ap.department
     FROM users u LEFT JOIN alumni_profiles ap ON ap.user_id = u.id
-    WHERE u.role='alumni' ORDER BY u.created_at DESC
+    WHERE u.role='alumni' ORDER BY u.created_at DESC LIMIT 8
 ")->fetchAll();
 
 include '../includes/header.php';
