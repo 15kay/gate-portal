@@ -27,7 +27,7 @@ $jobs->execute([$uid]);
 $jobs = $jobs->fetchAll();
 
 // Load CV for sidebar stats
-$cv = $pdo->prepare("SELECT profile_score, cv_file, skills FROM alumni_cv WHERE user_id=?");
+$cv = $pdo->prepare("SELECT cv_file, skills FROM alumni_cv WHERE user_id=?");
 $cv->execute([$uid]);
 $cv = $cv->fetch() ?: [];
 
@@ -320,8 +320,10 @@ include '../includes/header.php';
           </span>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:.82rem">
-          <span class="text-muted">Profile score</span>
-          <strong style="color:<?= ($cv['profile_score']??0)>=70?'var(--success)':'var(--accent)' ?>"><?= $cv['profile_score'] ?? 0 ?>/100</strong>
+          <span class="text-muted">CV uploaded</span>
+          <span class="badge <?= !empty($cv['cv_file']) ? 'badge-success' : 'badge-secondary' ?>" style="font-size:.65rem">
+            <?= !empty($cv['cv_file']) ? 'Yes' : 'No' ?>
+          </span>
         </div>
       </div>
     </div>
