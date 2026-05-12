@@ -61,18 +61,17 @@ UPDATE alumni_profiles SET
 WHERE user_id = @olivia_id;
 
 -- Insert or update CV data for alumni
-INSERT INTO alumni_cv (user_id, summary, skills, profile_score) VALUES
-(@john_id, 'Passionate software developer with 2+ years of experience in web development. Proficient in PHP, JavaScript, and modern web frameworks. Strong problem-solving skills and ability to work in agile teams.', 'PHP, JavaScript, HTML, CSS, MySQL, Git, Laravel, React, Problem Solving, Team Collaboration', 85),
-(@sarah_id, 'Qualified Chartered Accountant with expertise in financial auditing and reporting. Strong analytical skills and attention to detail. Experience with IFRS and tax compliance.', 'Financial Auditing, IFRS, Tax Compliance, Excel, SAP, Financial Reporting, Risk Assessment, Analytical Thinking', 90),
-(@michael_id, 'Electrical engineer specializing in renewable energy systems and power distribution. Passionate about sustainable energy solutions and grid optimization.', 'Electrical Systems, Renewable Energy, AutoCAD, MATLAB, Power Distribution, Project Management, Technical Documentation', 88),
-(@linda_id, 'Dedicated social worker with experience in community development and family support services. Strong interpersonal skills and commitment to social justice.', 'Community Development, Case Management, Counseling, Report Writing, Crisis Intervention, Empathy, Communication', 82),
-(@david_id, 'IT specialist with expertise in network administration and cybersecurity. Experience managing enterprise-level infrastructure and implementing security protocols.', 'Network Administration, Cybersecurity, Windows Server, Linux, Cisco, Firewall Configuration, Troubleshooting, IT Support', 87),
-(@emma_id, 'Business analyst with strong background in process improvement and data analysis. Skilled at translating business requirements into technical solutions.', 'Business Analysis, Data Analysis, SQL, Power BI, Process Mapping, Requirements Gathering, Stakeholder Management, Agile', 89),
-(@james_id, 'Civil engineer with experience in road construction and infrastructure development. Strong project management skills and knowledge of construction standards.', 'Civil Engineering, AutoCAD, Project Management, Construction Management, Site Supervision, Quality Control, SANS Standards', 86),
-(@olivia_id, 'Passionate mathematics educator with experience teaching high school students. Committed to making mathematics accessible and engaging for all learners.', 'Mathematics Teaching, Curriculum Development, Classroom Management, Student Assessment, Educational Technology, Patience, Communication', 84)
+INSERT INTO alumni_cv (user_id, summary, skills) VALUES
+(@john_id, 'Passionate software developer with 2+ years of experience in web development. Proficient in PHP, JavaScript, and modern web frameworks. Strong problem-solving skills and ability to work in agile teams.', 'PHP, JavaScript, HTML, CSS, MySQL, Git, Laravel, React, Problem Solving, Team Collaboration'),
+(@sarah_id, 'Qualified Chartered Accountant with expertise in financial auditing and reporting. Strong analytical skills and attention to detail. Experience with IFRS and tax compliance.', 'Financial Auditing, IFRS, Tax Compliance, Excel, SAP, Financial Reporting, Risk Assessment, Analytical Thinking'),
+(@michael_id, 'Electrical engineer specializing in renewable energy systems and power distribution. Passionate about sustainable energy solutions and grid optimization.', 'Electrical Systems, Renewable Energy, AutoCAD, MATLAB, Power Distribution, Project Management, Technical Documentation'),
+(@linda_id, 'Dedicated social worker with experience in community development and family support services. Strong interpersonal skills and commitment to social justice.', 'Community Development, Case Management, Counseling, Report Writing, Crisis Intervention, Empathy, Communication'),
+(@david_id, 'IT specialist with expertise in network administration and cybersecurity. Experience managing enterprise-level infrastructure and implementing security protocols.', 'Network Administration, Cybersecurity, Windows Server, Linux, Cisco, Firewall Configuration, Troubleshooting, IT Support'),
+(@emma_id, 'Business analyst with strong background in process improvement and data analysis. Skilled at translating business requirements into technical solutions.', 'Business Analysis, Data Analysis, SQL, Power BI, Process Mapping, Requirements Gathering, Stakeholder Management, Agile'),
+(@james_id, 'Civil engineer with experience in road construction and infrastructure development. Strong project management skills and knowledge of construction standards.', 'Civil Engineering, AutoCAD, Project Management, Construction Management, Site Supervision, Quality Control, SANS Standards'),
+(@olivia_id, 'Passionate mathematics educator with experience teaching high school students. Committed to making mathematics accessible and engaging for all learners.', 'Mathematics Teaching, Curriculum Development, Classroom Management, Student Assessment, Educational Technology, Patience, Communication')
 ON DUPLICATE KEY UPDATE
     summary = VALUES(summary),
-    skills = VALUES(skills),
-    profile_score = VALUES(profile_score);
+    skills = VALUES(skills);
 
 SELECT 'Alumni profiles and CV data updated successfully!' AS Result;
