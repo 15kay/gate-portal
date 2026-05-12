@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_email'])) {
             $pdo->prepare("INSERT INTO email_verifications (user_id,new_email,token,expires_at) VALUES (?,?,?,?)")
                 ->execute([$uid, $new_email, $token, $expires]);
 
-            $portal = 'http://'.($_SERVER['HTTP_HOST'] ?? 'localhost').'/gate-portal';
+            $portal = 'http://'.($_SERVER['HTTP_HOST'] ?? 'localhost');
             $link   = $portal.'/alumni/verify_email.php?token='.$token;
             $name   = htmlspecialchars($p['full_name']);
             $html   = "
@@ -190,8 +190,8 @@ include '../includes/header.php';
     <p>Keep your information up to date to improve your job match score</p>
   </div>
   <div class="page-header-actions">
-    <a href="/gate-portal/alumni/cv_builder.php" class="btn btn-outline btn-sm">CV Builder</a>
-    <a href="/gate-portal/alumni/employment.php" class="btn btn-primary btn-sm">Employment</a>
+    <a href="/alumni/cv_builder.php" class="btn btn-outline btn-sm">CV Builder</a>
+    <a href="/alumni/employment.php" class="btn btn-primary btn-sm">Employment</a>
   </div>
 </div>
 
@@ -215,7 +215,7 @@ include '../includes/header.php';
     <div class="card" style="text-align:center;padding:1.75rem 1.25rem">
       <div style="position:relative;width:96px;margin:0 auto 1rem">
         <?php if (!empty($p['profile_photo'])): ?>
-        <img id="photo-preview" src="/gate-portal/<?= htmlspecialchars($p['profile_photo']) ?>"
+        <img id="photo-preview" src="/<?= htmlspecialchars($p['profile_photo']) ?>"
              style="width:96px;height:96px;border-radius:50%;object-fit:cover;border:3px solid var(--border);display:block" alt="">
         <?php else: ?>
         <div id="photo-placeholder" style="width:96px;height:96px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-size:2.4rem;font-weight:700">
