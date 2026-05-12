@@ -178,7 +178,7 @@ function _gate_error_html(
     <h1><?= htmlspecialchars($title) ?></h1>
     <p class="desc"><?= $body ?></p>
     <div class="actions">
-      <a href="/gate-portal/index.php" class="btn btn-primary">Back to Portal</a>
+      <a href="/index.php" class="btn btn-primary">Back to Portal</a>
       <a href="javascript:history.back()" class="btn btn-outline">Go Back</a>
     </div>
 
