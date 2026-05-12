@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!empty($_SESSION['user_id'])) { header('Location: /gate-portal/index.php'); exit; }
+if (!empty($_SESSION['user_id'])) { header('Location: /index.php'); exit; }
 require_once '../config/db.php';
 require_once '../includes/csrf.php';
 
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id']   = $user['id'];
             $_SESSION['full_name'] = $user['full_name'];
             $_SESSION['role']      = $user['role'];
-            header('Location: /gate-portal/index.php'); exit;
+            header('Location: /index.php'); exit;
         }
 
         $_SESSION[$key]['count']++;
@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       <p style="text-align:center;font-size:.875rem;color:var(--muted)">
         New alumni?
-        <a href="/gate-portal/auth/register.php" style="color:var(--primary);font-weight:600;text-decoration:none">Create an account</a>
+        <a href="/auth/register.php" style="color:var(--primary);font-weight:600;text-decoration:none">Create an account</a>
       </p>
       <p style="text-align:center;font-size:.75rem;color:var(--muted);margin-top:2rem;line-height:1.6">
         &copy; <?= date('Y') ?> Walter Sisulu University. All rights reserved.

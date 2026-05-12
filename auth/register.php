@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!empty($_SESSION['user_id'])) { header('Location: /gate-portal/index.php'); exit; }
+if (!empty($_SESSION['user_id'])) { header('Location: /index.php'); exit; }
 require_once '../config/db.php';
 require_once '../includes/csrf.php';
 require_once '../includes/faculties.php';
@@ -12,13 +12,13 @@ if (setting('registration_open', '1') === '0') {
     $inst = setting('institution_name', 'Walter Sisulu University');
     $email = setting('contact_email', 'alumni@wsu.ac.za');
     die('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Registration Closed</title>
-    <link rel="stylesheet" href="/gate-portal/assets/css/style.css"></head><body>
+    <link rel="stylesheet" href="/assets/css/style.css"></head><body>
     <div class="auth-wrap"><div class="auth-panel-right" style="grid-column:1/-1">
     <div class="auth-form-wrap" style="text-align:center">
     <div style="font-size:3rem;margin-bottom:1rem">🔒</div>
     <h2 style="color:var(--primary)">Registration Temporarily Closed</h2>
     <p style="color:var(--muted);margin:.75rem 0 1.5rem">Alumni self-registration is currently closed by the institution. Please contact <strong>' . htmlspecialchars($email) . '</strong> for assistance.</p>
-    <a href="/gate-portal/auth/login.php" class="btn btn-primary">Back to Sign In</a>
+    <a href="/auth/login.php" class="btn btn-primary">Back to Sign In</a>
     </div></div></div></body></html>');
 }
 
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify'])) {
             $error = 'No matching student record found. Please check your student number and ID/passport number, or contact the Alumni Office.';
             $step  = 1;
         } elseif ($student['is_registered']) {
-            $error = 'An account already exists for this student number. Please <a href="/gate-portal/auth/login.php" style="font-weight:600;color:inherit">sign in</a> instead.';
+            $error = 'An account already exists for this student number. Please <a href="/auth/login.php" style="font-weight:600;color:inherit">sign in</a> instead.';
             $step  = 1;
         } else {
             // Identity verified — move to step 2
@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 <title>Create Account — GATE Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/gate-portal/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 <div class="auth-wrap">
@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
   <!-- LEFT PANEL -->
   <div class="auth-panel-left">
     <div class="auth-left-logo">
-      <img src="/gate-portal/wsu-logo.svg" alt="Walter Sisulu University">
+      <img src="/wsu-logo.svg" alt="Walter Sisulu University">
     </div>
     <div class="auth-left-content">
       <h1>Join the WSU Alumni Network</h1>
@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
           </div>
           <h2 style="color:var(--text);margin-bottom:.5rem">Account Created!</h2>
           <p style="color:var(--muted);font-size:.9rem;margin-bottom:1.5rem">Your alumni account has been verified and created successfully.</p>
-          <a href="/gate-portal/auth/login.php" class="btn btn-primary btn-lg" style="width:100%;justify-content:center">Sign In Now</a>
+          <a href="/auth/login.php" class="btn btn-primary btn-lg" style="width:100%;justify-content:center">Sign In Now</a>
         </div>
 
       <?php elseif ($step === 1): ?>
@@ -212,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
         <div class="auth-divider">or</div>
         <p style="text-align:center;font-size:.875rem;color:var(--muted)">
           Already have an account?
-          <a href="/gate-portal/auth/login.php" style="color:var(--primary);font-weight:600;text-decoration:none">Sign in</a>
+          <a href="/auth/login.php" style="color:var(--primary);font-weight:600;text-decoration:none">Sign in</a>
         </p>
         <p style="text-align:center;font-size:.78rem;color:var(--muted);margin-top:1rem">
           Having trouble? Contact the Alumni Office at <strong><?= htmlspecialchars(setting('contact_email','alumni@wsu.ac.za')) ?></strong>
@@ -273,7 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
           <button type="submit" name="register" value="1" class="btn btn-primary btn-lg" style="width:100%;justify-content:center">
             Create Account
           </button>
-          <a href="/gate-portal/auth/register.php" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:.5rem">
+          <a href="/auth/register.php" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:.5rem">
             ← Start Over
           </a>
         </form>
