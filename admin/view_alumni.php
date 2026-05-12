@@ -174,6 +174,7 @@ include '../includes/header.php';
         <?php
         $academic = [
           ['Degree',          $alumni['degree']],
+          ['Faculty',         $alumni['faculty']],
           ['Department',      $alumni['department']],
           ['Graduation Year', $alumni['graduation_year']],
           ['Student ID',      $alumni['student_id']],
