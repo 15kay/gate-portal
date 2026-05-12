@@ -8,7 +8,7 @@ $uid = $_SESSION['user_id'];
 if (isset($_GET['rsvp']) && is_numeric($_GET['rsvp'])) {
     try { $pdo->prepare("INSERT INTO event_rsvps (event_id, user_id) VALUES (?,?)")->execute([$_GET['rsvp'], $uid]); }
     catch (PDOException $e) { $pdo->prepare("DELETE FROM event_rsvps WHERE event_id=? AND user_id=?")->execute([$_GET['rsvp'], $uid]); }
-    header('Location: /gate-portal/alumni/events.php'); exit;
+    header('Location: /alumni/events.php'); exit;
 }
 
 $events = $pdo->query("

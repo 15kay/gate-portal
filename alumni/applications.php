@@ -115,7 +115,7 @@ include '../includes/header.php';
     <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--border)" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
     <p><?= $filter ? 'No applications with this status.' : 'You have not been submitted for any opportunities yet.' ?></p>
     <?php if (!$filter): ?>
-    <a href="/gate-portal/alumni/job_match.php" class="btn btn-outline btn-sm">Browse Job Matches</a>
+    <a href="/alumni/job_match.php" class="btn btn-outline btn-sm">Browse Job Matches</a>
     <?php endif; ?>
   </div>
 </div>

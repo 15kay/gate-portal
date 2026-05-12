@@ -103,7 +103,7 @@ include '../includes/header.php';
     <p>Track your career history and current employment status</p>
   </div>
   <div class="page-header-actions">
-    <a href="/gate-portal/alumni/profile.php" class="btn btn-outline btn-sm">← Back to Profile</a>
+    <a href="/alumni/profile.php" class="btn btn-outline btn-sm">← Back to Profile</a>
   </div>
 </div>
 
@@ -117,7 +117,7 @@ include '../includes/header.php';
     <div class="card-header">
       <span class="card-title"><?= $editing ? 'Edit Record' : 'Add Record' ?></span>
       <?php if ($editing): ?>
-      <a href="/gate-portal/alumni/employment.php" class="btn btn-outline btn-sm">Cancel</a>
+      <a href="/alumni/employment.php" class="btn btn-outline btn-sm">Cancel</a>
       <?php endif; ?>
     </div>
 

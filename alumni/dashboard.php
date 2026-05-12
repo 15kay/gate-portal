@@ -65,7 +65,7 @@ include '../includes/header.php';
     <p><?= date('l, d F Y') ?></p>
   </div>
   <div class="page-header-actions">
-    <a href="/gate-portal/alumni/profile.php" class="btn btn-outline btn-sm">Edit Profile</a>
+    <a href="/alumni/profile.php" class="btn btn-outline btn-sm">Edit Profile</a>
   </div>
 </div>
 
@@ -128,13 +128,13 @@ include '../includes/header.php';
         <div class="progress-bar-fill" style="width:<?= $completion ?>%;background:var(--accent)"></div>
       </div>
       <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-        <?php if (empty($p['profile_photo'])): ?><a href="/gate-portal/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ Photo</a><?php endif; ?>
-        <?php if (empty($p['phone'])): ?><a href="/gate-portal/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ Phone</a><?php endif; ?>
-        <?php if (empty($p['graduation_year'])): ?><a href="/gate-portal/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ Grad Year</a><?php endif; ?>
-        <?php if (empty($p['degree'])): ?><a href="/gate-portal/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ Degree</a><?php endif; ?>
-        <?php if (empty($p['department'])): ?><a href="/gate-portal/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ Department</a><?php endif; ?>
-        <?php if (empty($p['bio'])): ?><a href="/gate-portal/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ Bio</a><?php endif; ?>
-        <?php if (empty($p['linkedin_url'])): ?><a href="/gate-portal/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ LinkedIn</a><?php endif; ?>
+        <?php if (empty($p['profile_photo'])): ?><a href="/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ Photo</a><?php endif; ?>
+        <?php if (empty($p['phone'])): ?><a href="/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ Phone</a><?php endif; ?>
+        <?php if (empty($p['graduation_year'])): ?><a href="/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ Grad Year</a><?php endif; ?>
+        <?php if (empty($p['degree'])): ?><a href="/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ Degree</a><?php endif; ?>
+        <?php if (empty($p['department'])): ?><a href="/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ Department</a><?php endif; ?>
+        <?php if (empty($p['bio'])): ?><a href="/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ Bio</a><?php endif; ?>
+        <?php if (empty($p['linkedin_url'])): ?><a href="/alumni/profile.php" class="badge badge-warning" style="text-decoration:none">+ LinkedIn</a><?php endif; ?>
       </div>
     </div>
     <?php endif; ?>
@@ -143,11 +143,11 @@ include '../includes/header.php';
     <div class="card">
       <div class="card-header">
         <span class="card-title">My Profile</span>
-        <a href="/gate-portal/alumni/profile.php" class="btn btn-outline btn-sm">Edit</a>
+        <a href="/alumni/profile.php" class="btn btn-outline btn-sm">Edit</a>
       </div>
       <div class="profile-header">
         <?php if ($p['profile_photo']): ?>
-          <img src="/gate-portal/<?= htmlspecialchars($p['profile_photo']) ?>" class="profile-photo" alt="Photo">
+          <img src="/<?= htmlspecialchars($p['profile_photo']) ?>" class="profile-photo" alt="Photo">
         <?php else: ?>
           <div class="profile-avatar-placeholder"><?= strtoupper(substr($_SESSION['full_name'],0,1)) ?></div>
         <?php endif; ?>
@@ -165,7 +165,7 @@ include '../includes/header.php';
       <?php if (!$current_job): ?>
       <div class="alert alert-warning" style="margin-top:.5rem">
         No employment record found.
-        <a href="/gate-portal/alumni/employment.php" style="font-weight:600;color:inherit">Add now →</a>
+        <a href="/alumni/employment.php" style="font-weight:600;color:inherit">Add now →</a>
       </div>
       <?php else: ?>
       <div style="background:var(--bg);border-radius:var(--radius);padding:.875rem 1rem;margin-top:.5rem">
@@ -182,22 +182,22 @@ include '../includes/header.php';
     <div class="card">
       <div class="card-header"><span class="card-title">Quick Actions</span></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
-        <a href="/gate-portal/alumni/employment.php" class="btn btn-outline" style="justify-content:center;padding:.75rem">
+        <a href="/alumni/employment.php" class="btn btn-outline" style="justify-content:center;padding:.75rem">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
           Update Employment
         </a>
-        <a href="/gate-portal/alumni/directory.php" class="btn btn-outline" style="justify-content:center;padding:.75rem">
+        <a href="/alumni/directory.php" class="btn btn-outline" style="justify-content:center;padding:.75rem">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           Browse Directory
         </a>
-        <a href="/gate-portal/alumni/messages.php" class="btn btn-outline" style="justify-content:center;padding:.75rem;position:relative">
+        <a href="/alumni/messages.php" class="btn btn-outline" style="justify-content:center;padding:.75rem;position:relative">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           Messages
           <?php if ($unread_count > 0): ?>
           <span style="position:absolute;top:.4rem;right:.4rem;background:var(--danger);color:#fff;border-radius:50%;width:16px;height:16px;font-size:.65rem;display:flex;align-items:center;justify-content:center;font-weight:700"><?= $unread_count ?></span>
           <?php endif; ?>
         </a>
-        <a href="/gate-portal/alumni/events.php" class="btn btn-outline" style="justify-content:center;padding:.75rem">
+        <a href="/alumni/events.php" class="btn btn-outline" style="justify-content:center;padding:.75rem">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           View Events
         </a>
@@ -213,7 +213,7 @@ include '../includes/header.php';
     <div class="card">
       <div class="card-header">
         <span class="card-title">Upcoming Events</span>
-        <a href="/gate-portal/alumni/events.php" class="btn btn-outline btn-sm">All</a>
+        <a href="/alumni/events.php" class="btn btn-outline btn-sm">All</a>
       </div>
       <?php if ($events): ?>
       <div style="display:flex;flex-direction:column;gap:.875rem">
@@ -244,7 +244,7 @@ include '../includes/header.php';
     <div class="card">
       <div class="card-header">
         <span class="card-title">Career Summary</span>
-        <a href="/gate-portal/alumni/employment.php" class="btn btn-outline btn-sm">Manage</a>
+        <a href="/alumni/employment.php" class="btn btn-outline btn-sm">Manage</a>
       </div>
       <div style="display:flex;flex-direction:column;gap:.5rem">
         <div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem .75rem;background:var(--bg);border-radius:var(--radius)">

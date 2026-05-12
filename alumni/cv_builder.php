@@ -260,7 +260,7 @@ include '../includes/header.php';
     <p>Build your CV profile to get matched with opportunities</p>
   </div>
   <div class="page-header-actions">
-    <a href="/gate-portal/alumni/job_match.php" class="btn btn-primary btn-sm">
+    <a href="/alumni/job_match.php" class="btn btn-primary btn-sm">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       View Job Matches
     </a>
@@ -275,7 +275,7 @@ include '../includes/header.php';
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
   <span>Your profile is incomplete. You must fill in
     <strong><?= implode(', ', $missing) ?></strong> before you can be matched to opportunities.
-    <a href="/gate-portal/alumni/profile.php" style="color:inherit;font-weight:700">Complete profile →</a>
+    <a href="/alumni/profile.php" style="color:inherit;font-weight:700">Complete profile →</a>
   </span>
 </div>
 <?php endif; ?>
@@ -518,12 +518,12 @@ include '../includes/header.php';
             <div class="text-xs text-muted">Upload a new file to replace it</div>
           </div>
           <?php if (strtolower(pathinfo($cv['cv_file'], PATHINFO_EXTENSION)) === 'pdf'): ?>
-          <button type="button" class="btn btn-outline btn-sm" onclick="openCvPreview('/gate-portal/uploads/cvs/<?= htmlspecialchars($cv['cv_file']) ?>')">
+          <button type="button" class="btn btn-outline btn-sm" onclick="openCvPreview('/uploads/cvs/<?= htmlspecialchars($cv['cv_file']) ?>')">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             Preview
           </button>
           <?php else: ?>
-          <a href="/gate-portal/uploads/cvs/<?= htmlspecialchars($cv['cv_file']) ?>" target="_blank" class="btn btn-outline btn-sm">Download</a>
+          <a href="/uploads/cvs/<?= htmlspecialchars($cv['cv_file']) ?>" target="_blank" class="btn btn-outline btn-sm">Download</a>
           <?php endif; ?>
         </div>
         <?php endif; ?>
@@ -540,7 +540,7 @@ include '../includes/header.php';
       <div class="card">
         <div class="card-header">
           <span class="card-title">Employment History</span>
-          <a href="/gate-portal/alumni/employment.php" class="btn btn-outline btn-sm">Edit</a>
+          <a href="/alumni/employment.php" class="btn btn-outline btn-sm">Edit</a>
         </div>
         <div style="display:flex;flex-direction:column;gap:.5rem">
           <?php foreach ($jobs as $j): ?>

@@ -28,7 +28,7 @@ if (!$token) {
             // Apply the change
             $pdo->prepare("UPDATE users SET email=? WHERE id=?")->execute([$row['new_email'], $row['user_id']]);
             $pdo->prepare("DELETE FROM email_verifications WHERE user_id=?")->execute([$row['user_id']]);
-            header('Location: /gate-portal/alumni/profile.php?email_verified=1'); exit;
+            header('Location: /alumni/profile.php?email_verified=1'); exit;
         }
     }
 }
@@ -42,7 +42,7 @@ include '../includes/header.php';
     </div>
     <h2 style="margin-bottom:.5rem">Verification Failed</h2>
     <p class="text-muted"><?= htmlspecialchars($error) ?></p>
-    <a href="/gate-portal/alumni/profile.php" class="btn btn-primary" style="margin-top:1.25rem">Back to Profile</a>
+    <a href="/alumni/profile.php" class="btn btn-primary" style="margin-top:1.25rem">Back to Profile</a>
   </div>
 </div>
 <?php include '../includes/footer.php'; ?>

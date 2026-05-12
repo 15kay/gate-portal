@@ -59,7 +59,7 @@ include '../includes/header.php';
         <input type="password" name="confirm_password" required placeholder="Repeat new password">
       </div>
       <button type="submit" class="btn btn-primary">Update Password</button>
-      <a href="/gate-portal/alumni/profile.php" class="btn btn-outline" style="margin-left:.5rem">Cancel</a>
+      <a href="/alumni/profile.php" class="btn btn-outline" style="margin-left:.5rem">Cancel</a>
     </form>
   </div>
 </div>

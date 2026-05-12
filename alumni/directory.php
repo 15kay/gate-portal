@@ -64,7 +64,7 @@ include '../includes/header.php';
     </div>
     <button type="submit" class="btn btn-primary btn-sm">Search</button>
     <?php if ($search || $dept || $year): ?>
-    <a href="/gate-portal/alumni/directory.php" class="btn btn-outline btn-sm">Clear</a>
+    <a href="/alumni/directory.php" class="btn btn-outline btn-sm">Clear</a>
     <?php endif; ?>
   </form>
 </div>
@@ -88,7 +88,7 @@ include '../includes/header.php';
   <div class="card" style="padding:1.25rem;transition:box-shadow .2s" onmouseover="this.style.boxShadow='var(--shadow)'" onmouseout="this.style.boxShadow=''">
     <div style="display:flex;gap:.875rem;align-items:flex-start;margin-bottom:.875rem">
       <?php if ($a['profile_photo']): ?>
-        <img src="/gate-portal/<?= htmlspecialchars($a['profile_photo']) ?>"
+        <img src="/<?= htmlspecialchars($a['profile_photo']) ?>"
              style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--border);flex-shrink:0" alt="">
       <?php else: ?>
         <div style="width:52px;height:52px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;font-weight:700;flex-shrink:0">
