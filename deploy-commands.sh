@@ -1,0 +1,23 @@
+#!/bin/bash
+# Quick Deployment Commands Reference
+
+echo "=== GATE Portal Deployment Commands ==="
+echo ""
+echo "1. Push to GitHub (triggers auto-deploy):"
+echo "   git add . && git commit -m 'Update' && git push origin main"
+echo ""
+echo "2. Check deployment log on server:"
+echo "   ssh ubuntu@13.60.96.145 'tail -20 /var/www/html/gate-portal/deploy.log'"
+echo ""
+echo "3. Manual pull on server:"
+echo "   ssh ubuntu@13.60.96.145 'cd /var/www/html/gate-portal && sudo git pull origin main'"
+echo ""
+echo "4. Restart Apache on server:"
+echo "   ssh ubuntu@13.60.96.145 'sudo systemctl restart apache2'"
+echo ""
+echo "5. Check Apache errors:"
+echo "   ssh ubuntu@13.60.96.145 'sudo tail -20 /var/log/apache2/gate-portal-error.log'"
+echo ""
+echo "6. Fix permissions:"
+echo "   ssh ubuntu@13.60.96.145 'cd /var/www/html/gate-portal && sudo chown -R www-data:www-data . && sudo chmod -R 755 . && sudo chmod -R 777 uploads'"
+echo ""

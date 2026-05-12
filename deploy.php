@@ -12,10 +12,11 @@
  */
 
 // ── Configuration ─────────────────────────────────────────────────────────────
-define('WEBHOOK_SECRET', '91ab8cc456808c7cb5fee00e3080796681ad35ad9d35b86404870b22a96e3266');
+define('WEBHOOK_SECRET', 'CHANGE_THIS_SECRET_KEY_IN_PRODUCTION');
 define('REPO_PATH', __DIR__);
 define('BRANCH', 'main');
 define('LOG_FILE', __DIR__ . '/deploy.log');
+define('GIT_PATH', '/usr/bin/git'); // Ubuntu git path
 
 // ── Verify GitHub signature ──────────────────────────────────────────────────
 $payload = file_get_contents('php://input');
@@ -52,8 +53,13 @@ $timestamp = date('Y-m-d H:i:s');
 chdir(REPO_PATH);
 
 // Pull latest changes
-exec('git fetch origin ' . BRANCH . ' 2>&1', $output, $return1);
-exec('git reset --hard origin/' . BRANCH . ' 2>&1', $output, $return2);
+exec(GIT_PATH . ' fetch origin ' . BRANCH . ' 2>&1', $output, $return1);
+exec(GIT_PATH . ' reset --hard origin/' . BRANCH . ' 2>&1', $output, $return2);
+exec(GIT_PATH . ' clean -fd 2>&1', $output, $return3);
+
+// Set permissions after deployment
+exec('chmod -R 755 ' . REPO_PATH . ' 2>&1', $output);
+exec('chmod -R 777 ' . REPO_PATH . '/uploads 2>&1', $output);
 
 // Log the deployment
 $logEntry = "\n[{$timestamp}] Deployment triggered by {$data['pusher']['name']}\n";
@@ -61,6 +67,7 @@ $logEntry .= "Commit: {$data['head_commit']['id']}\n";
 $logEntry .= "Message: {$data['head_commit']['message']}\n";
 $logEntry .= "Output:\n" . implode("\n", $output) . "\n";
 $logEntry .= "Status: " . (($return1 === 0 && $return2 === 0) ? 'SUCCESS' : 'FAILED') . "\n";
+$logEntry .= "Server: " . gethostname() . " (" . ($_SERVER['SERVER_ADDR'] ?? 'unknown') . ")\n";
 $logEntry .= str_repeat('-', 80) . "\n";
 
 file_put_contents(LOG_FILE, $logEntry, FILE_APPEND);
