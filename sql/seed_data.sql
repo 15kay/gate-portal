@@ -36,7 +36,7 @@ INSERT INTO alumni_profiles (user_id, student_id, id_number, degree, department,
 (@olivia_id, '201889012', '9909205345678', 'BA Education', 'Faculty of Education', 2022, '+27 89 890 1234', 'Queenstown, Eastern Cape', 'High school mathematics teacher');
 
 -- Insert employment records
-INSERT INTO employment_records (alumni_user_id, employer, job_title, industry, employment_type, start_date, is_current, location, description) VALUES
+INSERT INTO employment_records (user_id, employer, job_title, industry, employment_type, start_date, is_current, location, description) VALUES
 (@john_id, 'Tech Solutions SA', 'Junior Developer', 'Information Technology', 'Full-time', '2022-03-01', 1, 'East London', 'Developing web applications using PHP and JavaScript'),
 (@sarah_id, 'KPMG South Africa', 'Audit Associate', 'Finance & Accounting', 'Full-time', '2021-02-01', 1, 'Port Elizabeth', 'Conducting financial audits for corporate clients'),
 (@michael_id, 'Eskom Holdings', 'Electrical Engineer', 'Energy & Utilities', 'Full-time', '2023-07-01', 1, 'Port Elizabeth', 'Working on power distribution systems'),
