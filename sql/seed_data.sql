@@ -25,7 +25,7 @@ SET @james_id = (SELECT id FROM users WHERE email = 'james.wilson@alumni.wsu.ac.
 SET @olivia_id = (SELECT id FROM users WHERE email = 'olivia.taylor@alumni.wsu.ac.za');
 
 -- Insert alumni profiles
-INSERT INTO alumni_profiles (user_id, student_number, id_number, degree, department, graduation_year, phone, location, bio) VALUES
+INSERT INTO alumni_profiles (user_id, student_id, id_number, degree, department, graduation_year, phone, location, bio) VALUES
 (@john_id, '201812345', '9501155678089', 'BSc Computer Science', 'Faculty of Science', 2022, '+27 82 123 4567', 'East London, Eastern Cape', 'Software developer passionate about web technologies'),
 (@sarah_id, '201823456', '9603225789012', 'BCom Accounting', 'Faculty of Commerce', 2021, '+27 83 234 5678', 'Mthatha, Eastern Cape', 'Chartered accountant with 3 years experience'),
 (@michael_id, '201934567', '9705115890123', 'BEng Electrical Engineering', 'Faculty of Engineering', 2023, '+27 84 345 6789', 'Port Elizabeth, Eastern Cape', 'Electrical engineer specializing in renewable energy'),
@@ -47,7 +47,7 @@ INSERT INTO employment_records (alumni_user_id, employer, job_title, industry, e
 (@olivia_id, 'Queenstown High School', 'Mathematics Teacher', 'Education', 'Full-time', '2022-01-15', 1, 'Queenstown', 'Teaching Grade 10-12 mathematics');
 
 -- Insert student registry entries
-INSERT INTO student_registry (student_number, id_number, degree, department, graduation_year, activated) VALUES
+INSERT INTO student_registry (student_id, id_number, degree, department, graduation_year, activated) VALUES
 ('201812345', '9501155678089', 'BSc Computer Science', 'Faculty of Science', 2022, 1),
 ('201823456', '9603225789012', 'BCom Accounting', 'Faculty of Commerce', 2021, 1),
 ('201934567', '9705115890123', 'BEng Electrical Engineering', 'Faculty of Engineering', 2023, 1),
