@@ -24,16 +24,16 @@ SET @emma_id = (SELECT id FROM users WHERE email = 'emma.davis@alumni.wsu.ac.za'
 SET @james_id = (SELECT id FROM users WHERE email = 'james.wilson@alumni.wsu.ac.za');
 SET @olivia_id = (SELECT id FROM users WHERE email = 'olivia.taylor@alumni.wsu.ac.za');
 
--- Insert alumni profiles
-INSERT INTO alumni_profiles (user_id, student_id, id_number, degree, department, graduation_year, phone, location, bio) VALUES
-(@john_id, '201812345', '9501155678089', 'BSc Computer Science', 'Faculty of Science', 2022, '+27 82 123 4567', 'East London, Eastern Cape', 'Software developer passionate about web technologies'),
-(@sarah_id, '201823456', '9603225789012', 'BCom Accounting', 'Faculty of Commerce', 2021, '+27 83 234 5678', 'Mthatha, Eastern Cape', 'Chartered accountant with 3 years experience'),
-(@michael_id, '201934567', '9705115890123', 'BEng Electrical Engineering', 'Faculty of Engineering', 2023, '+27 84 345 6789', 'Port Elizabeth, Eastern Cape', 'Electrical engineer specializing in renewable energy'),
-(@linda_id, '201845678', '9802205901234', 'BA Social Work', 'Faculty of Humanities', 2020, '+27 85 456 7890', 'Butterworth, Eastern Cape', 'Community development practitioner'),
-(@david_id, '201956789', '9904125012345', 'BSc Information Technology', 'Faculty of Science', 2023, '+27 86 567 8901', 'East London, Eastern Cape', 'IT specialist and network administrator'),
-(@emma_id, '201867890', '9707215123456', 'BCom Business Management', 'Faculty of Commerce', 2022, '+27 87 678 9012', 'Mthatha, Eastern Cape', 'Business analyst and project manager'),
-(@james_id, '201978901', '9808125234567', 'BEng Civil Engineering', 'Faculty of Engineering', 2023, '+27 88 789 0123', 'East London, Eastern Cape', 'Civil engineer working on infrastructure projects'),
-(@olivia_id, '201889012', '9909205345678', 'BA Education', 'Faculty of Education', 2022, '+27 89 890 1234', 'Queenstown, Eastern Cape', 'High school mathematics teacher');
+-- Insert alumni profiles with faculty and gender
+INSERT INTO alumni_profiles (user_id, student_id, id_number, degree, faculty, department, graduation_year, phone, gender, location, bio) VALUES
+(@john_id, '201812345', '9501155678089', 'BSc Computer Science', 'Faculty of Engineering, Built Environment and Information Technology', 'Department of Business & Application Development', 2022, '+27 82 123 4567', 'Male', 'East London, Eastern Cape', 'Software developer passionate about web technologies'),
+(@sarah_id, '201823456', '9603225789012', 'BCom Accounting', 'Faculty of Economics and Financial Sciences', 'Department of Accounting Sciences', 2021, '+27 83 234 5678', 'Female', 'Mthatha, Eastern Cape', 'Chartered accountant with 3 years experience'),
+(@michael_id, '201934567', '9705115890123', 'BEng Electrical Engineering', 'Faculty of Engineering, Built Environment and Information Technology', 'Department of Electrical Engineering', 2023, '+27 84 345 6789', 'Male', 'Port Elizabeth, Eastern Cape', 'Electrical engineer specializing in renewable energy'),
+(@linda_id, '201845678', '9802205901234', 'BA Social Work', 'Faculty of Law, Humanities and Social Sciences', 'Social Sciences', 2020, '+27 85 456 7890', 'Female', 'Butterworth, Eastern Cape', 'Community development practitioner'),
+(@david_id, '201956789', '9904125012345', 'BSc Information Technology', 'Faculty of Engineering, Built Environment and Information Technology', 'Department of Network & Information Technology', 2023, '+27 86 567 8901', 'Male', 'East London, Eastern Cape', 'IT specialist and network administrator'),
+(@emma_id, '201867890', '9707215123456', 'BCom Business Management', 'Faculty of Management and Public Administration Sciences', 'Department of Management', 2022, '+27 87 678 9012', 'Female', 'Mthatha, Eastern Cape', 'Business analyst and project manager'),
+(@james_id, '201978901', '9808125234567', 'BEng Civil Engineering', 'Faculty of Engineering, Built Environment and Information Technology', 'Department of Civil Engineering', 2023, '+27 88 789 0123', 'Male', 'East London, Eastern Cape', 'Civil engineer working on infrastructure projects'),
+(@olivia_id, '201889012', '9909205345678', 'BA Education', 'Faculty of Education', 'Department of Mathematics, Science and Technology', 2022, '+27 89 890 1234', 'Female', 'Queenstown, Eastern Cape', 'High school mathematics teacher');
 
 -- Insert employment records
 INSERT INTO employment_records (user_id, employer, job_title, industry, employment_type, start_date, is_current, location, description) VALUES
@@ -48,16 +48,16 @@ INSERT INTO employment_records (user_id, employer, job_title, industry, employme
 
 -- Insert student registry entries
 INSERT INTO student_registry (student_id, id_number, degree, department, graduation_year, activated) VALUES
-('201812345', '9501155678089', 'BSc Computer Science', 'Faculty of Science', 2022, 1),
-('201823456', '9603225789012', 'BCom Accounting', 'Faculty of Commerce', 2021, 1),
-('201934567', '9705115890123', 'BEng Electrical Engineering', 'Faculty of Engineering', 2023, 1),
-('201845678', '9802205901234', 'BA Social Work', 'Faculty of Humanities', 2020, 1),
-('201956789', '9904125012345', 'BSc Information Technology', 'Faculty of Science', 2023, 1),
-('201867890', '9707215123456', 'BCom Business Management', 'Faculty of Commerce', 2022, 1),
-('201978901', '9808125234567', 'BEng Civil Engineering', 'Faculty of Engineering', 2023, 1),
-('201889012', '9909205345678', 'BA Education', 'Faculty of Education', 2022, 1),
-('202012346', '0001015456789', 'BSc Chemistry', 'Faculty of Science', 2024, 0),
-('202023457', '0102025567890', 'BCom Economics', 'Faculty of Commerce', 2024, 0);
+('201812345', '9501155678089', 'BSc Computer Science', 'Department of Business & Application Development', 2022, 1),
+('201823456', '9603225789012', 'BCom Accounting', 'Department of Accounting Sciences', 2021, 1),
+('201934567', '9705115890123', 'BEng Electrical Engineering', 'Department of Electrical Engineering', 2023, 1),
+('201845678', '9802205901234', 'BA Social Work', 'Social Sciences', 2020, 1),
+('201956789', '9904125012345', 'BSc Information Technology', 'Department of Network & Information Technology', 2023, 1),
+('201867890', '9707215123456', 'BCom Business Management', 'Department of Management', 2022, 1),
+('201978901', '9808125234567', 'BEng Civil Engineering', 'Department of Civil Engineering', 2023, 1),
+('201889012', '9909205345678', 'BA Education', 'Department of Mathematics, Science and Technology', 2022, 1),
+('202012346', '0001015456789', 'BSc Chemistry', 'Department of Chemical and Physical Sciences', 2024, 0),
+('202023457', '0102025567890', 'BCom Economics', 'Department of Business Management and Economics', 2024, 0);
 
 -- Insert sample events
 INSERT INTO events (title, description, event_date, location, created_by) VALUES
@@ -92,6 +92,17 @@ INSERT INTO opportunities (title, company, industry, location, employment_type, 
 'Our graduate trainee program offers comprehensive training in retail banking operations, customer service, and financial products.',
 'BCom Finance/Accounting/Economics, Strong numerical skills, Customer service orientation, Excellent communication',
 '2024-08-31', 'open', @nedbank_id, 1);
+
+-- Insert CV data for alumni
+INSERT INTO alumni_cv (user_id, summary, skills, profile_score) VALUES
+(@john_id, 'Passionate software developer with 2+ years of experience in web development. Proficient in PHP, JavaScript, and modern web frameworks. Strong problem-solving skills and ability to work in agile teams.', 'PHP, JavaScript, HTML, CSS, MySQL, Git, Laravel, React, Problem Solving, Team Collaboration', 85),
+(@sarah_id, 'Qualified Chartered Accountant with expertise in financial auditing and reporting. Strong analytical skills and attention to detail. Experience with IFRS and tax compliance.', 'Financial Auditing, IFRS, Tax Compliance, Excel, SAP, Financial Reporting, Risk Assessment, Analytical Thinking', 90),
+(@michael_id, 'Electrical engineer specializing in renewable energy systems and power distribution. Passionate about sustainable energy solutions and grid optimization.', 'Electrical Systems, Renewable Energy, AutoCAD, MATLAB, Power Distribution, Project Management, Technical Documentation', 88),
+(@linda_id, 'Dedicated social worker with experience in community development and family support services. Strong interpersonal skills and commitment to social justice.', 'Community Development, Case Management, Counseling, Report Writing, Crisis Intervention, Empathy, Communication', 82),
+(@david_id, 'IT specialist with expertise in network administration and cybersecurity. Experience managing enterprise-level infrastructure and implementing security protocols.', 'Network Administration, Cybersecurity, Windows Server, Linux, Cisco, Firewall Configuration, Troubleshooting, IT Support', 87),
+(@emma_id, 'Business analyst with strong background in process improvement and data analysis. Skilled at translating business requirements into technical solutions.', 'Business Analysis, Data Analysis, SQL, Power BI, Process Mapping, Requirements Gathering, Stakeholder Management, Agile', 89),
+(@james_id, 'Civil engineer with experience in road construction and infrastructure development. Strong project management skills and knowledge of construction standards.', 'Civil Engineering, AutoCAD, Project Management, Construction Management, Site Supervision, Quality Control, SANS Standards', 86),
+(@olivia_id, 'Passionate mathematics educator with experience teaching high school students. Committed to making mathematics accessible and engaging for all learners.', 'Mathematics Teaching, Curriculum Development, Classroom Management, Student Assessment, Educational Technology, Patience, Communication', 84);
 
 -- Insert portal settings
 INSERT INTO portal_settings (setting_key, setting_value) VALUES
