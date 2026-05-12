@@ -10,6 +10,13 @@ $profile = $pdo->prepare("SELECT ap.*, u.email FROM alumni_profiles ap JOIN user
 $profile->execute([$uid]);
 $p = $profile->fetch();
 
+// If no profile exists, create a default empty one
+if (!$p) {
+    $pdo->prepare("INSERT INTO alumni_profiles (user_id) VALUES (?)")-> execute([$uid]);
+    $profile->execute([$uid]);
+    $p = $profile->fetch();
+}
+
 $current_job = $pdo->prepare("SELECT * FROM employment_records WHERE user_id=? AND is_current=1 ORDER BY start_date DESC LIMIT 1");
 $current_job->execute([$uid]);
 $current_job = $current_job->fetch();
@@ -35,7 +42,7 @@ $total_alumni = $pdo->query("SELECT COUNT(*) FROM users WHERE role='alumni'")->f
 
 // Profile completion score
 $fields = ['profile_photo','phone','graduation_year','degree','department','bio','linkedin_url'];
-$filled = array_filter($fields, fn($f) => !empty($p[$f]));
+$filled = $p ? array_filter($fields, fn($f) => !empty($p[$f])) : [];
 $completion = round((count($filled) / count($fields)) * 100);
 
 include '../includes/header.php';

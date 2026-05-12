@@ -259,7 +259,7 @@ set_exception_handler(function(Throwable $e): void {
         $e instanceof PDOException
             => 'database',
 
-        $e instanceof ErrorException && in_array($e->getSeverity(), [E_WARNING, E_NOTICE, E_DEPRECATED, E_STRICT, E_USER_DEPRECATED], true)
+        $e instanceof ErrorException && in_array($e->getSeverity(), [E_WARNING, E_NOTICE, E_DEPRECATED, E_USER_DEPRECATED], true)
             => 'php_warning',
 
         // Socket / network signals
