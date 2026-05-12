@@ -49,14 +49,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <title>Sign In — GATE Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/gate-portal/assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 <div class="auth-wrap">
 
   <div class="auth-panel-left">
     <div class="auth-left-logo">
-      <img src="/gate-portal/wsu-logo.svg" alt="Walter Sisulu University">
+      <img src="/wsu-logo.svg" alt="Walter Sisulu University">
     </div>
     <div class="auth-left-content">
       <h1>Graduate &amp; Alumni Tracking &amp; Engagement</h1>
