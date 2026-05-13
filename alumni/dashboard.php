@@ -12,9 +12,17 @@ $p = $profile->fetch();
 
 // If no profile exists, create a default empty one
 if (!$p) {
-    $pdo->prepare("INSERT INTO alumni_profiles (user_id) VALUES (?)")-> execute([$uid]);
+    try {
+        $pdo->prepare("INSERT INTO alumni_profiles (user_id) VALUES (?)")->execute([$uid]);
+    } catch (Throwable $e) {
+        // Row may already exist due to race condition — ignore
+    }
     $profile->execute([$uid]);
     $p = $profile->fetch();
+}
+// Ensure $p is always an array so field access never throws notices
+if (!$p) {
+    $p = [];
 }
 
 $current_job = $pdo->prepare("SELECT * FROM employment_records WHERE user_id=? AND is_current=1 ORDER BY start_date DESC LIMIT 1");
@@ -33,10 +41,12 @@ $unread = $pdo->prepare("
 $unread->execute([$uid, $uid]);
 $unread_count = $unread->fetchColumn();
 
-$events = $pdo->query("
-    SELECT e.*, (SELECT COUNT(*) FROM event_rsvps WHERE event_id=e.id AND user_id=$uid) AS rsvped
+$events_stmt = $pdo->prepare("
+    SELECT e.*, (SELECT COUNT(*) FROM event_rsvps WHERE event_id=e.id AND user_id=?) AS rsvped
     FROM events e WHERE e.event_date >= CURDATE() ORDER BY e.event_date LIMIT 3
-")->fetchAll();
+");
+$events_stmt->execute([$uid]);
+$events = $events_stmt->fetchAll();
 
 $total_alumni = $pdo->query("SELECT COUNT(*) FROM users WHERE role='alumni'")->fetchColumn();
 

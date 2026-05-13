@@ -110,3 +110,18 @@ INSERT INTO student_registry (student_number, id_passport, full_name, degree, de
 ('201900001', '9001015009087', 'Thabo Nkosi', 'BSc Computer Science', 'Faculty of Science & Technology', 2023),
 ('201900002', '9203025009083', 'Nomsa Dlamini', 'BCom Accounting', 'Faculty of Business', 2022),
 ('201900003', 'A12345678', 'John Mokoena', 'BA Education', 'Faculty of Education', 2021);
+
+-- Portal settings (required by all pages via includes/settings.php)
+CREATE TABLE IF NOT EXISTS portal_settings (
+    `key`      VARCHAR(100) PRIMARY KEY,
+    `value`    TEXT,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+INSERT IGNORE INTO portal_settings (`key`, `value`) VALUES
+('portal_name',       'GATE Portal'),
+('institution_name',  'Walter Sisulu University'),
+('contact_email',     'alumni@wsu.ac.za'),
+('registration_open', '1'),
+('maintenance_mode',  '0'),
+('welcome_message',   '');
