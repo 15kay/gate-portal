@@ -6,7 +6,19 @@ require_once '../includes/settings.php';
 
 $uid = $_SESSION['user_id'];
 
-$profile = $pdo->prepare("SELECT ap.*, u.email FROM alumni_profiles ap JOIN users u ON u.id=ap.user_id WHERE ap.user_id=?");
+$profile = $pdo->prepare("
+    SELECT
+        ap.*,
+        u.email,
+        COALESCE(NULLIF(ap.degree, ''),          sr.degree)           AS degree,
+        COALESCE(NULLIF(ap.faculty, ''),          sr.department)       AS faculty,
+        COALESCE(ap.graduation_year,              sr.graduation_year)  AS graduation_year,
+        COALESCE(NULLIF(ap.student_id, ''),       sr.student_number)   AS student_id
+    FROM alumni_profiles ap
+    JOIN users u ON u.id = ap.user_id
+    LEFT JOIN student_registry sr ON sr.student_number = ap.student_id
+    WHERE ap.user_id = ?
+");
 $profile->execute([$uid]);
 $p = $profile->fetch();
 

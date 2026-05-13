@@ -5,8 +5,21 @@ require_once '../config/db.php';
 
 $uid = $_SESSION['user_id'];
 
-// Load profile
-$profile = $pdo->prepare("SELECT ap.*, u.full_name, u.email FROM alumni_profiles ap JOIN users u ON u.id=ap.user_id WHERE ap.user_id=?");
+// Load profile — fall back to student_registry for missing academic fields
+$profile = $pdo->prepare("
+    SELECT
+        ap.*,
+        u.full_name,
+        u.email,
+        COALESCE(NULLIF(ap.degree, ''),          sr.degree)           AS degree,
+        COALESCE(NULLIF(ap.faculty, ''),          sr.department)       AS faculty,
+        COALESCE(ap.graduation_year,              sr.graduation_year)  AS graduation_year,
+        COALESCE(NULLIF(ap.student_id, ''),       sr.student_number)   AS student_id
+    FROM alumni_profiles ap
+    JOIN users u ON u.id = ap.user_id
+    LEFT JOIN student_registry sr ON sr.student_number = ap.student_id
+    WHERE ap.user_id = ?
+");
 $profile->execute([$uid]);
 $p = $profile->fetch();
 
