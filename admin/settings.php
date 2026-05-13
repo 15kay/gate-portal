@@ -8,9 +8,9 @@ $success = $error = '';
 
 // Ensure table exists
 $pdo->exec("CREATE TABLE IF NOT EXISTS portal_settings (
-    `key`       VARCHAR(100) PRIMARY KEY,
-    `value`     TEXT,
-    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    setting_key   VARCHAR(100) PRIMARY KEY,
+    setting_value TEXT,
+    updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )");
 
 // Now load settings helper (needs table to exist first)
@@ -32,8 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 
     $stmt = $pdo->prepare(
-        "INSERT INTO portal_settings (`key`, `value`) VALUES (?, ?)
-         ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), updated_at = NOW()"
+        "INSERT INTO portal_settings (setting_key, setting_value) VALUES (?, ?)
+         ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value), updated_at = NOW()"
     );
 
     foreach ($fields as $f) {

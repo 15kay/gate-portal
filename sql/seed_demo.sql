@@ -12,7 +12,7 @@ USE gate_portal;
 -- PORTAL SETTINGS
 -- ============================================================================
 
-INSERT INTO portal_settings (`key`, `value`) VALUES
+INSERT INTO portal_settings (setting_key, setting_value) VALUES
 ('portal_name',        'GATE Portal'),
 ('institution_name',   'Walter Sisulu University'),
 ('contact_email',      'alumni@wsu.ac.za'),
@@ -20,7 +20,7 @@ INSERT INTO portal_settings (`key`, `value`) VALUES
 ('welcome_message',    'Welcome to the WSU Graduate & Alumni Tracking & Engagement Portal. Connect with opportunities, stay engaged with your alma mater, and advance your career.'),
 ('registration_open',  '1'),
 ('maintenance_mode',   '0')
-ON DUPLICATE KEY UPDATE `value` = VALUES(`value`);
+ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value);
 
 -- ============================================================================
 -- ALUMNI USERS  (password hash = Alumni@1234)

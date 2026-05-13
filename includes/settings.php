@@ -8,7 +8,7 @@ function setting(string $key, string $default = ''): string {
     static $cache = [];
     if (!isset($cache[$key])) {
         try {
-            $s = $pdo->prepare("SELECT `value` FROM portal_settings WHERE `key`=?");
+            $s = $pdo->prepare("SELECT setting_value FROM portal_settings WHERE setting_key=?");
             $s->execute([$key]);
             $r = $s->fetchColumn();
             $cache[$key] = ($r !== false) ? $r : $default;

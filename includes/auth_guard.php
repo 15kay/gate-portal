@@ -26,12 +26,12 @@ function require_login() {
         global $pdo;
         if (!isset($pdo)) require_once dirname(__DIR__) . '/config/db.php';
         try {
-            $m = $pdo->query("SELECT `value` FROM portal_settings WHERE `key`='maintenance_mode' LIMIT 1");
+            $m = $pdo->query("SELECT setting_value FROM portal_settings WHERE setting_key='maintenance_mode' LIMIT 1");
             if ($m && $m->fetchColumn() === '1') {
                 require_once dirname(__DIR__) . '/config/db.php';
                 $msg = '';
                 try {
-                    $r = $pdo->query("SELECT `value` FROM portal_settings WHERE `key`='maintenance_message' LIMIT 1");
+                    $r = $pdo->query("SELECT setting_value FROM portal_settings WHERE setting_key='maintenance_message' LIMIT 1");
                     $msg = $r ? $r->fetchColumn() : '';
                 } catch (Throwable $e) {}
                 if (!$msg) $msg = 'The portal is currently undergoing scheduled maintenance. Please check back soon.';

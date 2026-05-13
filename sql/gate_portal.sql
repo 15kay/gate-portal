@@ -113,12 +113,12 @@ INSERT INTO student_registry (student_number, id_passport, full_name, degree, de
 
 -- Portal settings (required by all pages via includes/settings.php)
 CREATE TABLE IF NOT EXISTS portal_settings (
-    `key`      VARCHAR(100) PRIMARY KEY,
-    `value`    TEXT,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    setting_key   VARCHAR(100) PRIMARY KEY,
+    setting_value TEXT,
+    updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-INSERT IGNORE INTO portal_settings (`key`, `value`) VALUES
+INSERT IGNORE INTO portal_settings (setting_key, setting_value) VALUES
 ('portal_name',       'GATE Portal'),
 ('institution_name',  'Walter Sisulu University'),
 ('contact_email',     'alumni@wsu.ac.za'),
