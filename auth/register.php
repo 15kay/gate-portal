@@ -103,9 +103,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
                     $uid = $pdo->lastInsertId();
 
                     // Create profile pre-filled from registry
-                    $pdo->prepare("INSERT INTO alumni_profiles (user_id, student_id, id_number, degree, department, graduation_year) VALUES (?,?,?,?,?,?)")
+                    // Note: student_registry.department stores the faculty name
+                    $pdo->prepare("INSERT INTO alumni_profiles (user_id, student_id, id_number, degree, faculty, department, graduation_year) VALUES (?,?,?,?,?,?,?)")
                         ->execute([$uid, $student['student_number'], $student['id_passport'],
-                                   $student['degree'], $student['department'], $student['graduation_year']]);
+                                   $student['degree'], $student['department'], '', $student['graduation_year']]);
 
                     // Mark student as registered
                     $pdo->prepare("UPDATE student_registry SET is_registered=1 WHERE student_number=?")
